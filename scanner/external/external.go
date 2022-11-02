@@ -264,7 +264,7 @@ func CheckDomainPermutations(cfg *cmd.Config) {
             defer resp.Body.Close()
 
             if resp.StatusCode == 200 {
-                log.Infof("\033[32m\033[1mPUBLIC\033[39m\033[0m http://%s (\033[33mhttp://%s.%s\033[39m)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix)
+                log.Infof("PUBLIC http://%s (http://%s.%s)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix)
                 cfg.Stats.IncRequests200()
                 cfg.Stats.Add200Link(pd.Permutation)
             } else if resp.StatusCode == 307 {
@@ -294,29 +294,29 @@ func CheckDomainPermutations(cfg *cmd.Config) {
                 defer resp.Body.Close()
 
                 if resp.StatusCode == 200 {
-                    log.Infof("\033[32m\033[1mPUBLIC\033[39m\033[0m %s (\033[33mhttp://%s.%s\033[39m)", loc, pd.Domain.Domain, pd.Domain.Suffix)
+                    log.Infof("PUBLIC %s (http://%s.%s)", loc, pd.Domain.Domain, pd.Domain.Suffix)
                     cfg.Stats.IncRequests200()
                     cfg.Stats.Add200Link(loc)
                 } else if resp.StatusCode == 403 {
-                    log.Infof("\033[31m\033[1mFORBIDDEN\033[39m\033[0m http://%s (\033[33mhttp://%s.%s\033[39m)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix)
+                    log.Infof("FORBIDDEN http://%s (http://%s.%s)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix)
                     cfg.Stats.IncRequests403()
                     cfg.Stats.Add403Link(pd.Permutation)
                 }
             } else if resp.StatusCode == 403 {
-                log.Infof("\033[31m\033[1mFORBIDDEN\033[39m\033[0m http://%s (\033[33mhttp://%s.%s\033[39m)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix)
+                log.Infof("FORBIDDEN http://%s (http://%s.%s)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix)
                 cfg.Stats.IncRequests403()
                 cfg.Stats.Add403Link(pd.Permutation)
             } else if resp.StatusCode == 404 {
-                log.Debugf("\033[31m\033[1mNOT FOUND\033[39m\033[0m http://%s (\033[33mhttp://%s.%s\033[39m)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix)
+                log.Debugf("NOT FOUND http://%s (http://%s.%s)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix)
                 cfg.Stats.IncRequests404()
                 cfg.Stats.Add404Link(pd.Permutation)
             } else if resp.StatusCode == 503 {
-                log.Infof("\033[31m\033[1mTOO FAST\033[39m\033[0m (added to queue to process later)")
+                log.Infof("TOO FAST (added to queue to process later)")
                 permutatedQ.Put(pd)
                 cfg.Stats.IncRequests503()
                 cfg.Stats.Add503Link(pd.Permutation)
             } else {
-                log.Infof("\033[34m\033[1mUNKNOWN\033[39m\033[0m http://%s (\033[33mhttp://%s.%s\033[39m) (%d)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix, resp.StatusCode)
+                log.Infof("UNKNOWN http://%s (http://%s.%s) (%d)", pd.Permutation, pd.Domain.Domain, pd.Domain.Suffix, resp.StatusCode)
             }
 
             <-sem
@@ -377,7 +377,7 @@ func CheckKeywordPermutations(cfg *cmd.Config) {
 
             //log.Infof("%s (%d)", host, resp.StatusCode)
             if resp.StatusCode == 200 {
-                log.Infof("\033[32m\033[1mPUBLIC\033[39m\033[0m http://%s (\033[33m%s\033[39m)", pd.Permutation, pd.Keyword)
+                log.Infof("PUBLIC http://%s (%s)", pd.Permutation, pd.Keyword)
                 cfg.Stats.IncRequests200()
                 cfg.Stats.Add200Link(pd.Permutation)
             } else if resp.StatusCode == 307 {
@@ -407,29 +407,29 @@ func CheckKeywordPermutations(cfg *cmd.Config) {
                 defer resp.Body.Close()
 
                 if resp.StatusCode == 200 {
-                    log.Infof("\033[32m\033[1mPUBLIC\033[39m\033[0m %s (\033[33m%s\033[39m)", loc, pd.Keyword)
+                    log.Infof("PUBLIC %s (%s)", loc, pd.Keyword)
                     cfg.Stats.IncRequests200()
                     cfg.Stats.Add200Link(loc)
                 } else if resp.StatusCode == 403 {
-                    log.Infof("\033[31m\033[1mFORBIDDEN\033[39m\033[0m %s (\033[33m%s\033[39m)", loc, pd.Keyword)
+                    log.Infof("FORBIDDEN %s (%s)", loc, pd.Keyword)
                     cfg.Stats.IncRequests403()
                     cfg.Stats.Add403Link(loc)
                 }
             } else if resp.StatusCode == 403 {
-                log.Infof("\033[31m\033[1mFORBIDDEN\033[39m\033[0m http://%s (\033[33m%s\033[39m)", pd.Permutation, pd.Keyword)
+                log.Infof("FORBIDDEN http://%s (%s)", pd.Permutation, pd.Keyword)
                 cfg.Stats.IncRequests403()
                 cfg.Stats.Add403Link(pd.Permutation)
             } else if resp.StatusCode == 404 {
-                log.Debugf("\033[31m\033[1mNOT FOUND\033[39m\033[0m http://%s (\033[33m%s\033[39m)", pd.Permutation, pd.Keyword)
+                log.Debugf("NOT FOUND http://%s (%s)", pd.Permutation, pd.Keyword)
                 cfg.Stats.IncRequests404()
                 cfg.Stats.Add404Link(pd.Permutation)
             } else if resp.StatusCode == 503 {
-                log.Infof("\033[31m\033[1mTOO FAST\033[39m\033[0m (added to queue to process later)")
+                log.Infof("TOO FAST (added to queue to process later)")
                 permutatedQ.Put(pd)
                 cfg.Stats.IncRequests503()
                 cfg.Stats.Add503Link(pd.Permutation)
             } else {
-                log.Infof("\033[34m\033[1mUNKNOWN\033[39m\033[0m http://%s (\033[33m%s\033[39m) (%d)", pd.Permutation, pd.Keyword, resp.StatusCode)
+                log.Infof("UNKNOWN http://%s (%s) (%d)", pd.Permutation, pd.Keyword, resp.StatusCode)
             }
 
             <-sem
